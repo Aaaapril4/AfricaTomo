@@ -1,0 +1,41 @@
+#!/bin/bash --login
+#BATCH Lines for Resource Request ##########
+ 
+#SBATCH --time=12:00:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                   # number of different nodes - could be an exact number or a range of nodes (same as -N)
+#SBATCH --ntasks=1                 # number of tasks - how many tasks (nodes) that you require (same as -n)
+#SBATCH --cpus-per-task=1          # number of CPUs (or cores) per task (same as -c)
+#SBATCH --mem-per-cpu=2G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --job-name=tomo               # you can give your job a name for easier identification (same as -J)
+#SBATCH --mail-user=jieyaqi@msu.edu
+#SBATCH --mail-type=ALL
+#SBATCH -o FMM
+########## Command Lines to Run ##########
+
+#cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_I2
+sh caldist.sh
+sh FMM_tomo3_m.sh
+conda activate seis
+projp=/mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs
+source /mnt/home/jieyaqi/myseis/bin/activate
+cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/tomo
+sh do_tomo.sh &
+cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/checkboard
+sh do_cb.sh &
+wait
+sh select.sh
+sh caldist_seleted.sh
+cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/tomo
+sh do_tomo.sh &
+cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/checkboard
+sh do_cb.sh &
+wait
+
+#cd /mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/tomo
+#python3 gen_mask.py
+#python3 cal_perturbation.py 
+
+#sh PLOT_abs_int.sh $projp
+#sh PLOT_cbr_int.sh
+#sh PLOT_per_int.sh
+scontrol show job $SLURM_JOB_ID     ### write job information to output file

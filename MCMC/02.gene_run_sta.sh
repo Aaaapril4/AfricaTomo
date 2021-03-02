@@ -50,12 +50,12 @@ do
 
     if [ $typ == 'phase' ]
     then
-        sedmax=`echo $sed | awk '{print $1+3}'`
-        sedmin=`echo $sed | awk '{print $1-3}'`
+        sedmax=`echo $sed | awk '{print $1+4}'`
+        sedmin=`echo $sed | awk '{print $1-4}'`
         #echo fix
     else
-        sedmax=`echo $sed | awk '{print $1+3}'`
-        sedmin=`echo $sed | awk '{print $1-3}'`
+        sedmax=`echo $sed | awk '{print $1+4}'`
+        sedmin=`echo $sed | awk '{print $1-4}'`
     fi
     if [ `echo "0 > $sedmin" | bc` = 1 ]
     then
@@ -72,8 +72,8 @@ do
     echo "rm -rf run_info" >> run.sh
     echo "fi" >> run.sh
     echo "$run para.input Africa."$sta".dat >> run_info" >> run.sh
-    echo "rm bsp* Hz* mod* pCr* Ref*" >> run.sh
     # echo "awk '{print $lat,$lon,\$1,\$2}' intp.dat >> $filep/vel.xyz" >> run.sh
+    echo "sh plot_mcmc2.sh" >> run.sh
     echo "date" >> run.sh
     cd $codedir
 

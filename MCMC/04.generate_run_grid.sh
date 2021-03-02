@@ -64,7 +64,6 @@ do
     echo "rm -rf run_info" >> run.sh
     echo "fi" >> run.sh
     echo "$run para.input Africa_"$lat"_"$lon".dat >> run_info" >> run.sh
-    echo "rm bsp* Hz* mod* pCr* Ref*" >> run.sh
     # echo "awk '{print $lat,$lon,\$1,\$2}' intp.dat >> $filep/vel.xyz" >> run.sh
     echo "date" >> run.sh
     cd $codedir

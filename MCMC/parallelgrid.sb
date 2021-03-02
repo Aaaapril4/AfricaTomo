@@ -14,7 +14,7 @@
 
 
 source /mnt/home/jieyaqi/myseis/bin/activate
-cd /mnt/home/jieyaqi/code/JOINT_PACKAGE/Shell_code/MCMC
+cd /mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 #python3 preparefile.py
 sh 04.generate_run_grid.sh
 

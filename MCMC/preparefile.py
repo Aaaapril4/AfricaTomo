@@ -3,14 +3,14 @@
 # path
 path = '/mnt/home/jieyaqi/'
 staf = '/mnt/home/jieyaqi/Documents/station.txt' # file included all stations, format: net, sta, lon, lat
-phasep = '/mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs' # path of phase velocity
+phasep = '/mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/output_tomo' # path of phase velocity
 zhp = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/zhcurve' # path of zh curve
-wavep = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/waveformstack/station'
+wavep = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/waveform'
 outp = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/file' # output path
 invp = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion' # path to do inversion
 
 # set up period used 
-perlist = [5,7,9,13,17,21,25,29,33,37,41]
+perlist = [5,7,9,13,17,21,25,29,33,37,41,45]
 
 import numpy as np
 import sys
@@ -41,7 +41,7 @@ for per in perlist:
 #      y2
 # n4        n3
 # the grid file 1, 1.25, 1.5 ... 
-def interp(lat, lon, per, ivlat = 0.5, ivlon = 0.5):
+def interp(lat, lon, per, ivlat = 0.05, ivlon = 0.05):
     # the format of file lat, lon, value
     file = f'{phasep}/vgridc.{per}.txt'
     latg, long, valuel = np.loadtxt(file, unpack=True)
@@ -78,14 +78,14 @@ def collect_phase_grid(lat,lon):
     lon = round(float(lon),2)
     for per in perlist:
         
-        # f = f'{phasep}/vgridc.{per}.txt'
-        # latl,lonl,vel = np.loadtxt(f,unpack=True)
-        # latl = latd[per]
-        # lonl = lond[per]
-        # vel = veld[per]
-        # phasein.append([2,1,1,per,vel[latl==lat][lonl[latl==lat]==lon][0],1])
-        vel = interp(lat,lon,per)
-        phasein.append([2,1,1,per,vel,1])
+        f = f'{phasep}/vgridc.{per}.txt'
+        latl,lonl,vel = np.loadtxt(f,unpack=True)
+        latl = latd[per]
+        lonl = lond[per]
+        vel = veld[per]
+        phasein.append([2,1,1,per,vel[latl==lat][lonl[latl==lat]==lon][0],1])
+        # vel = interp(lat,lon,per)
+        # phasein.append([2,1,1,per,vel,1])
 
     phasein.insert(0,[1,len(phasein),1])
 

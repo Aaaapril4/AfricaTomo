@@ -2,6 +2,7 @@ projd=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion
 outf=$projd/vel.xyz
 mohof=$projd/moho.xyz
 sedif=$projd/sedi.xyz
+testd=$projd/test
 denser="0.4,0.6,0.8,1.5"
 
 
@@ -20,6 +21,12 @@ then
     rm $mohof
 fi
 
+if [ -e $testd ]
+then
+    rm -r $testd
+    mkdir $testd
+fi
+
 
 # collect grid
 path=$projd/grid
@@ -36,8 +43,9 @@ do
         sedi=`awk 'NR==8 {print $1}' $grid/MAX_PROBVM.dat`
         moho=`awk 'NR==28 {print $1}' $grid/MAX_PROBVM.dat`
         awk '{print '$lon','$lat',$1,$2}' $grid/intp.dat >> $outf
-        echo $lon   $lat    $moho >> $mohof
-        echo $lon   $lat    $sedi >> $sedif
+        #echo $lon   $lat    $moho >> $mohof
+        #echo $lon   $lat    $sedi >> $sedif
+        mv $grid/test.pdf $testd/"$grid".pdf
     else
         echo "NO RESULT"
     fi
@@ -65,6 +73,7 @@ do
         awk '{print '$lon','$lat',$1,$2}' $sta/intp.dat >> $outf
         echo $lon   $lat    $moho >> $mohof
         echo $lon   $lat    $sedi >> $sedif
+        mv $sta/test.pdf $testd/"$sta".pdf
     else 
         echo "NO RESULT"
     fi

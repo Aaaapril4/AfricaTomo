@@ -2,7 +2,7 @@
 run=/mnt/home/jieyaqi/code/JOINT_PACKAGE/src/MCMC_JOINT/LITMOD
 filep=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion
 outdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/grid
-codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Shell_code/MCMC
+codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohogrid.dat
 gridf=/mnt/home/jieyaqi/Documents/invgrid.txt
 waterf=~/Documents/water.dat
@@ -65,6 +65,7 @@ do
     echo "fi" >> run.sh
     echo "$run para.input Africa_"$lat"_"$lon".dat >> run_info" >> run.sh
     # echo "awk '{print $lat,$lon,\$1,\$2}' intp.dat >> $filep/vel.xyz" >> run.sh
+    echo "sh plot_mcmc2.sh" >> run.sh
     echo "date" >> run.sh
     cd $codedir
 

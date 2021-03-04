@@ -2,7 +2,7 @@
 run=/mnt/home/jieyaqi/code/JOINT_PACKAGE/bin/LITMOD
 filep=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion
 outdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/station
-codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Shell_code/MCMC
+codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohosta.dat
 stationfile=/mnt/home/jieyaqi/Documents/station.txt
 

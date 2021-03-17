@@ -1,4 +1,4 @@
-stap = '/mnt/ufs18/nodr/home/jieyaqi/inversion/station'
+stap = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/station'
 staf = '/mnt/home/jieyaqi/Documents/station.txt' # file included all stations, format: net, sta, lon, lat
 gridf = '/mnt/home/jieyaqi/Documents/invgrid.txt'
 outp = '/mnt/home/jieyaqi/Documents'
@@ -29,16 +29,18 @@ def get_latlon(sta):
 
 
 if __name__ == '__main__':
+    stal = []
     latl = []
     lonl = []
     typ = []
 
     for sta in os.listdir(stap):
-        if not os.path.isdir(f'{stap}/{sta}'):
+        if not os.path.exists(f'{stap}/{sta}/MAX_PROBVM.dat'):
             continue
         lat, lon = get_latlon(sta)
         latl.append(str(lat))
         lonl.append(str(lon))
+        stal.append(sta)
         phinfo, wfinfo, zhinfo = collect_sta(sta)
         if phinfo >= 1 and wfinfo >= 1 and zhinfo >= 1:
             typ.append('phzhwf')
@@ -53,4 +55,5 @@ if __name__ == '__main__':
         latl.append(str(grid.split('+')[0]))
         lonl.append(str(grid.split('+')[1]))
         typ.append('grid')
-    np.savetxt(f'{outp}/invinfo.txt',np.column_stack((lonl,latl,typ)),fmt='%s', delimiter='\t')
+        stal.append('grid')
+    np.savetxt(f'{outp}/invinfo.txt',np.column_stack((lonl,latl,typ,stal)),fmt='%s', delimiter='\t')

@@ -14,7 +14,7 @@ fi
 
 for grid in `awk '{print $1}' $gridf`
 do
-    
+
     lat=`echo $grid | awk -F '+' '{print $1}'`
     lon=`echo $grid | awk -F '+' '{print $2}'`
     if [ -e $outdir/G_"$lat"_$lon ]
@@ -23,7 +23,6 @@ do
     fi
     mkdir $outdir/G_"$lat"_$lon
     echo $lat $lon
-    # python3 preparefile.py grid $lat $lon
 
     cp $filep/file/Africa_"$lat"_"$lon".dat $outdir/G_"$lat"_$lon
     cp para.input $outdir/G_"$lat"_$lon

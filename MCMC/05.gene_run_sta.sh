@@ -15,18 +15,13 @@ fi
 for sta in `awk '{print $1}' /mnt/home/jieyaqi/Documents/mysta.lst`
 do
     echo $sta
-    if [ -e $outdir/$sta ]
+
+    if [ ! -e $outdir/$sta ]
     then
-        rm -r $outdir/$sta
+        mkdir $outdir/$sta
     fi
-    mkdir $outdir/$sta
 
-    net=`echo $sta | awk -F '.' '{print $1}'`
-    stn=`echo $sta | awk -F '.' '{print $2}'`
-    typ=`python3 $codedir/preparefile.py sta $net $stn`
-    #echo $typ
-
-    mv $filep/file/Africa."$sta".dat $outdir/$sta
+    cp $filep/file/Africa."$sta".dat $outdir/$sta
     cp para.input $outdir/$sta
     cp input_DRAM_T.dat $outdir/$sta
     cp plot_mcmc2.sh $outdir/$sta 
@@ -48,15 +43,9 @@ do
     mohomin=`echo $moho | awk '{print $1-10}'`
     mohomax=`echo $moho | awk '{print $1+10}'`
 
-    if [ $typ == 'phase' ]
-    then
-        sedmax=`echo $sed | awk '{print $1+4}'`
-        sedmin=`echo $sed | awk '{print $1-4}'`
-        #echo fix
-    else
-        sedmax=`echo $sed | awk '{print $1+4}'`
-        sedmin=`echo $sed | awk '{print $1-4}'`
-    fi
+    sedmax=`echo $sed | awk '{print $1+4}'`
+    sedmin=`echo $sed | awk '{print $1-4}'`
+
     if [ `echo "0 > $sedmin" | bc` = 1 ]
     then
         sedmin=0

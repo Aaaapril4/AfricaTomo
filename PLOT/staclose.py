@@ -54,10 +54,26 @@ if __name__ == '__main__':
       seis=sys.argv[2]
       line_fn=sys.argv[3]
       cut_off=float(sys.argv[4])
-      stlo, stla, dep, mag = np.loadtxt(seis, comments="#", unpack=True, usecols=(0,1,2,3))
+      
+      with open(seis, 'r') as f:
+         lines = [ line.strip().split('\t') for line in f.readlines()]
+
+      stlo = []
+      stla = []
+      dep = []
+      mag = []
+      for line in lines:
+         stlo.append(float(line[0]))
+         stla.append(float(line[1]))
+         dep.append(float(line[2]))
+         if len(line) == 3 or line[3] == '\n':
+            mag.append(1)
+         else:
+            mag.append(float(line[3]))
+      
       lplo, lpla = np.loadtxt(line_fn, comments="#", unpack=True, usecols=(0,1))
       ProjX, ProjY, flagD = get_proj(stlo, stla, lplo, lpla)
-      size = mag /2 
+      size = np.array(mag)/2 + 1
 
       for i in range(len(stlo)):
          if flagD[i] < cut_off:

@@ -152,7 +152,7 @@ plotshallow()
     gmt grdimage  input.grd  -R -J$J2  -BWSen -Ccptfile.cpt -P -O -K >> $PS
     gmt grdcontour input.grd -R -J -C0.5 -A1+f14p -W0.5p,black,dashed -O -K >> $PS
     awk x=$1'{print $(x),$3}' profilesed.grd | gmt psxy -R -J -Bwsen -W1p -K -O >> $PS
-    DSCALE=1.5i/-2.4i/2.5i/0.2ih
+    DSCALE=1.5i/-2.8i/2.5i/0.2ih
     gmt psscale -Ccptfile.cpt -D$DSCALE -Bx+l'Shallow Vs (km/s)' -O -K -X0 >> $PS
 }
 
@@ -172,7 +172,7 @@ plotdeep()
     awk '{print $0}' $seisf > temp
     python3 staclose.py seis temp lined 30 > staXY
     col=`echo $1 + 2 | bc -l`
-    awk x=$col'{print $(x), $6, $8}' staXY | gmt psxy -R$R3 -J$J3 -Sc -Wwhite -Gwhite -O -K >> $PS
+    awk x=$col'{print $(x), $6, $8}' staXY | gmt psxy -R$R3 -J$J3 -Sc -Wwhite -Gwhite -O -K -t10 >> $PS
 
     DSCALE=5i/-0.5i/2.5i/0.2ih
     gmt psscale -Ccptfile.cpt -D$DSCALE -Bx+l'Deep Vs (km/s)' -O -X0 >> $PS
@@ -192,6 +192,6 @@ gmt psconvert -A -P -Tf $PS
 rm $PS
 rm out.dat
 rm profile.grd
-rm lined temp
+#rm lined temp
 rm cptfile.cpt
 rm input.grd

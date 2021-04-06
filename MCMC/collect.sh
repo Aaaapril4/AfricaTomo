@@ -80,8 +80,13 @@ do
     
 done
 
-for dep in 0 0.40 0.60 0.80 1 1.5 2 3 4 5 6 7 8 10 12 16 20 25 30 35 40 45 50 55 60
+for dep in {1..200}
 do
+    awk '$3=='$dep' {print $1, $2, $4}' $outf | gmt surface  -R25/42/-15/4 -I0.2  -G$projd/dep."$dep".grd -T0.5
+done
+
+for dep in 0.40 0.60 0.80 1.5
+do  
     awk '$3=='$dep' {print $1, $2, $4}' $outf | gmt surface  -R25/42/-15/4 -I0.2  -G$projd/dep."$dep".grd -T0.5
 done
 gmt surface $projd/sedi.xyz -R25/42/-15/4 -I0.2  -G$projd/sed.grd -T0.5

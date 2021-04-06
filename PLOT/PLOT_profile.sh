@@ -34,6 +34,18 @@ avalue()
     endy=$4
 }
 
+plot_on_topo()
+{
+    # -S # -W # -G
+    python3 staclose.py sta temp lined 30 > staXY
+    if [ "$base" == "lon" ]
+    then
+        awk '{print $3, -700}' staXY | gmt psxy -R$R1 -J$J1 $1 $2 $3 -O -K >> $PS
+    else
+        awk '{print $4, -700}' staXY | gmt psxy -R$R1 -J$J1 $1 $2 $3 -O -K >> $PS
+    fi
+}
+
 londif=`abs $1 $3`
 latdif=`abs $2 $4`
 tag="norm"
@@ -61,21 +73,23 @@ fi
 R=25/42/-15/4
 R1=$startx/$endx/-1000/3000
 R2=$startx/$endx/0/4
-R3=$startx/$endx/0/55
+R3=$startx/$endx/0/200
 PS=~/Documents/plot/profile/profile"$1"_"$2"_"$3"_"$4".ps
 if [ $tag == "norm" ]
 then
     J1=x1i/0.00015i
     J2=x1i/-0.2i
-    J3=x1i/-0.03i
+    J3=x1i/-0.01i
 else
     J1=x-1i/0.00015i
     J2=x-1i/-0.2i
-    J3=x-1i/-0.03i
+    J3=x-1i/-0.01i
 fi
 
 datap=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion
-infof=~/Documents/invinfo.txt 
+infof=~/Documents/invinfo.txt
+volcanof=~/Documents/volcano_africa.txt
+seisf=~/Documents/seismicity.txt 
 
 gmt project -C$1/$2 -E$3/$4 -G0.025 > lined
 
@@ -100,30 +114,30 @@ rm topo.grd
 rm tomolined.dat
 
 # plot stations and grids
-awk '$3=="ph" || $3=="grid" {print $2, $1}' $infof > temp
-python3 staclose.py temp lined 30 > staXY
-if [ "$base" == "lon" ]
-then
-    awk '{print $3, -700}' staXY | gmt psxy -R$R1 -J$J1 -Sd5p -W0.7p,black -O -K >> $PS
-else
-    awk '{print $4, -700}' staXY | gmt psxy -R$R1 -J$J1 -Sd5p -W0.7p,black -O -K >> $PS
-fi
+awk '$3=="ph" || $3=="grid" {print $1, $2}' $infof > temp
+plot_on_topo -Sd5p -W0.7p,black 
 
-awk '$3=="phzh" || $3=="phzhwf" || $3=="phwf"{print $2, $1}' $infof > temp
-python3 staclose.py temp lined 30 > staXY
-if [ "$base" == "lon" ]
-then
-    awk '{print $3, -700}' staXY | gmt psxy -R$R1 -J$J1 -Si5p -Wblack -Gblack -O -K >> $PS
-else
-    awk '{print $4, -700}' staXY | gmt psxy -R$R1 -J$J1 -Si5p -Wblack -Gblack -O -K >> $PS
-fi
+awk '$3=="phzh" || $3=="phzhwf" || $3=="phwf"{print $1, $2}' $infof > temp
+plot_on_topo -Si5p -Wblack -Gblack
+
+awk '{print $1, $2}' $volcanof > temp
+plot_on_topo -Si5p -Wblack -Gred
 
 
 # generate grdfile for line
-for dep in 0 0.40 0.60 0.80 1 1.5 2 3 4 5 6 7 8 10 12 16 20 25 30 35 40 45  50 55 60
+for dep in {0..10}
 do
     gmt grdtrack lined -G$datap/dep.$dep.grd -T0.1 | awk dep=$dep'{print $1, $2, dep, $4}' >> profile.grd
 done
+for dep in {15..200..5} 
+do
+    gmt grdtrack lined -G$datap/dep.$dep.grd -T0.1 | awk dep=$dep'{print $1, $2, dep, $4}' >> profile.grd
+done
+for dep in 0.40 0.60 0.80 1.5 
+do
+    gmt grdtrack lined -G$datap/dep.$dep.grd -T0.1 | awk dep=$dep'{print $1, $2, dep, $4}' >> profile.grd
+done
+
 gmt grdtrack lined -G$datap/sed.grd -T0.1 | awk '{print $1, $2, $4}' > profilesed.grd
 gmt grdtrack lined -G$datap/moho.grd -T0.1 | awk '{print $1, $2, $4}' > profilemoho.grd
 
@@ -143,17 +157,22 @@ plotshallow()
 }
 
 
-# 0-60km
+# 0-200km
 plotdeep()
 {
-    gmt psbasemap -R$R3 -J$J3 -By10f5 -Bx1f0.5 -BWSen -P -K -O -X0i -Y-1.9i >> $PS
+    gmt psbasemap -R$R3 -J$J3 -By30f5 -Bx1f0.5 -BWSen -P -K -O -X0i -Y-2.3i >> $PS
     awk x=$1'{print $(x),$3,$4}' profile.grd | gmt blockmean -R$R3 -I0.1/2 > out.dat
 
     awk '{print $1, $2, $3}' out.dat | gmt surface  -R -I0.05/1  -Ginput.grd -T0.3 -C0.1 
     gmt makecpt -Croma -T3.1/4.7/0.4 -D -Z > cptfile.cpt
-    gmt grdimage  input.grd  -R -J$J3  -BWSen -Ccptfile.cpt -P -O -K >> $PS
+    gmt grdimage  input.grd  -R -J  -BWSen -Ccptfile.cpt -P -O -K >> $PS
     gmt grdcontour input.grd -R -J -L2/5 -C0.2 -A0.4+f14p -W0.5p,black,dashed -O -K >> $PS
     awk x=$1'{print $(x),$3}' profilemoho.grd | gmt psxy -R -J -Bwsen -W1p -K -O >> $PS
+
+    awk '{print $0}' $seisf > temp
+    python3 staclose.py seis temp lined 30 > staXY
+    col=`echo $1 + 2 | bc -l`
+    awk x=$col'{print $(x), $6, $8}' staXY | gmt psxy -R$R3 -J$J3 -Sc -Wwhite -Gwhite -O -K >> $PS
 
     DSCALE=5i/-0.5i/2.5i/0.2ih
     gmt psscale -Ccptfile.cpt -D$DSCALE -Bx+l'Deep Vs (km/s)' -O -X0 >> $PS
@@ -173,6 +192,6 @@ gmt psconvert -A -P -Tf $PS
 rm $PS
 rm out.dat
 rm profile.grd
-# rm lined
+rm lined temp
 rm cptfile.cpt
 rm input.grd

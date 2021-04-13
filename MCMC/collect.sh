@@ -37,7 +37,7 @@ do
     echo $grid
     if [ -e $grid/MAX_PROBVM.dat ]
     then
-        python3 /mnt/home/jieyaqi/code/JOINT_PACKAGE/Shell_code/MCMC/thick2dep.py $path/$grid $denser
+        python3 /mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC/thick2dep.py $path/$grid $denser
         lat=`echo $grid | awk -F '_' '{print $2}'`
         lon=`echo $grid | awk -F '_' '{print $3}'`
         sedi=`awk 'NR==8 {print $1}' $grid/MAX_PROBVM.dat`
@@ -63,7 +63,7 @@ do
     echo $sta
     if [ -e $sta/MAX_PROBVM.dat ]
     then
-        python3 /mnt/home/jieyaqi/code/JOINT_PACKAGE/Shell_code/MCMC/thick2dep.py $path/$sta $denser
+        python3 /mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC/thick2dep.py $path/$sta $denser
         net=`echo $sta | awk -F '.' '{print $1}'`
         stn=`echo $sta | awk -F '.' '{print $2}'`
         lat=`awk -F '|' '$1=="'$net'" && $2=="'$stn'"{print $3}' $stationfile`
@@ -80,7 +80,7 @@ do
     
 done
 
-for dep in {1..200}
+for dep in {0..200}
 do
     awk '$3=='$dep' {print $1, $2, $4}' $outf | gmt surface  -R25/42/-15/4 -I0.2  -G$projd/dep."$dep".grd -T0.5
 done

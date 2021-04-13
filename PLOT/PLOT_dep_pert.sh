@@ -10,10 +10,10 @@ gmt gmtset MAP_TICK_LENGTH_SECONDARY 2p
 R=25/40/-15/4
 J=m0.2i
 PS=~/Documents/plot/vs.ps
-INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/dep.${dep[$i]}.grd
 
 CPT=cptfile.cpt
-rfile=vscolor.dat
+INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/vel.xyz
+
 
 # depth you should give your own
 #dep=( 10 30 50 )
@@ -28,12 +28,13 @@ for (( i=0; i<=13; i++ ))
 do
 
     echo ${dep[$i]}
-	# awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE | gmt surface  -R$R -I0.2  -Ginput.grd -T0.5
-    gmt grdsample $INPUT_FILE -Ginput.grd2  -I0.1 -R$R -V
+	awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE > absvel.xyz
+    avg=`python3 cal_perturbation.py absvel.xyz`
+    gmt surface pertz.xyz -R$R -I0.2  -Ginput.grd -T0.5
+    gmt grdsample input.grd -Ginput.grd2  -I0.1 -R$R -V
     gmt grdfilter input.grd2 -Ginput.grd3 -Fg120 -D4 -R$R
 
-    range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
-    gmt makecpt -Cseis -T$range -D -Z > $CPT
+    gmt makecpt -Cvik -T-10/10/5 -D -Z -Iz> $CPT
 
 	if  (( $i ==  0  )) ; then
        XOFF=1i
@@ -68,6 +69,7 @@ do
     gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p/black -O -K>> $PS
     gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
     echo 36.5 -14 'Depth: '${dep[$i]}' km' | gmt pstext -J$J -R$R -F+f16p -O -K >> $PS
+    echo 31 3 'Average: '$avg' km/s' | gmt pstext -J$J -R$R -F+f16p -O -K >> $PS
    
 
     DSCALE=1.5i/-0.12i/2.6i/0.1ih

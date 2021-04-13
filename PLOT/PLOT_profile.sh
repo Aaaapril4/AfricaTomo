@@ -73,17 +73,17 @@ fi
 R=25/42/-15/4
 R1=$startx/$endx/-1000/3000
 R2=$startx/$endx/0/4
-R3=$startx/$endx/0/200
+R3=$startx/$endx/0/150
 PS=~/Documents/plot/profile/profile"$1"_"$2"_"$3"_"$4".ps
 if [ $tag == "norm" ]
 then
     J1=x1i/0.00015i
     J2=x1i/-0.2i
-    J3=x1i/-0.01i
+    J3=x1i/-0.012i
 else
     J1=x-1i/0.00015i
     J2=x-1i/-0.2i
-    J3=x-1i/-0.01i
+    J3=x-1i/-0.012i
 fi
 
 datap=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion

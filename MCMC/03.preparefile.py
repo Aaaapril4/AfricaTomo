@@ -12,9 +12,10 @@ invd = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion' # path to do inversi
 
 ncpu = 48
 # set up period used 
-#perlist_short = [5,7,9,13,17,21,25,29,33,37,41,45]
-perlist_short = [5, 9, 17, 25, 33, 41]
-perlist_long = [50, 67, 80, 100, 125, 143, 167, 182]
+perlist_short = [5,7,9,13,17,21,25,29,33,37,41]
+#perlist_short = [5, 9, 17, 25, 33, 41]
+#perlist_long = [50, 67, 80, 100, 125, 143, 167, 182]
+perlist_long = [50, 67, 80, 100, 125, 143]
 filename_long = ['bp07', 'bp08', 'bp09', 'bp10', 'bp11', 'bp12', 'bp13', 'bp14']
 import numpy as np
 import sys

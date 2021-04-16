@@ -22,7 +22,7 @@ cat mean_prob.lst | awk '{print $2, $1}' | gmt psxy  -R -J -W1p,grey,- -O -K -P 
 gmt psscale  -Cpdf.cpt -P -D1.i/-0.5i/2.i/0.1ih -O -K  -L  >> $OFN
 
 ### PH and ZH ratio fitting ####
-gmt psbasemap -R5/200/1.0/5.0 -JX2.0i/2i -Bx40f20+l"Period: s" -By1f0.5+l"phase velocity: km/s" -BWSne+t"PH fitting" -K -P -O -X2.75i -Y2.75i >>$OFN
+gmt psbasemap -R5/150/1.0/5.0 -JX2.0i/2i -Bx40f20+l"Period: s" -By1f0.5+l"phase velocity: km/s" -BWSne+t"PH fitting" -K -P -O -X2.75i -Y2.75i >>$OFN
 grep RPH  BEST_MODEL.fitting | awk '{print $3, $5}' | gmt psxy -J -R -Bx -By -St0.075i -W1p,black  -P -K -O>> $OFN
 grep RPH  BEST_MODEL.fitting | awk '{print $3, $4}' | gmt psxy  -R -J -W0.5p,red -O -K -P >>$OFN
 

@@ -17,7 +17,7 @@ gmt grdgradient cut.grd -A45 -Nt -Gcut.grd.gradient -V
 
 
 CPT=cptfile.cpt
-gmt makecpt -Cvik -T0/1.5/0.3 -D -Ic -Z > cptfile.cpt
+gmt makecpt -Cvik -T0/3/0.5 -D -Ic -Z > cptfile.cpt
 INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/sedi.xyz
 echo $INPUT_FILE
 XOFF=1i
@@ -26,11 +26,13 @@ YOFF=12i
 gmt psbasemap -R$R -J$J -B4f1 -BWseN -K -X$XOFF -Y$YOFF > $PS
 gmt pscoast -R$R -J$J -N2/1p -A500 -W1p -O -K >> $PS
 
+
+gmt grdimage cut.grd -R -J$J  -Bx4f2  -By4f2 -BWseN -Icut.grd.gradient -Cgray -X$XOFF -Y$YOFF -K > $PS
+
 gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p/black -O -K >> $PS
 gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p/black -O -K>> $PS
 gmt psxy ~/Documents/volcano.dat -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
 
-gmt grdimage cut.grd -R -J$J  -Bx4f2  -By4f2 -BWseN -Icut.grd.gradient -Cgray -X$XOFF -Y$YOFF -K > $PS
 for sta in `awk '$3=="phwf" || $3=="phzh" || $3=="phzhwf" {print $4}' /mnt/home/jieyaqi/Documents/invinfo.txt`
 do
     awk '$4=="'$sta'" {print $1,$2,$3}' $INPUT_FILE |

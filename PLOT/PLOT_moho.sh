@@ -17,8 +17,8 @@ gmt grdgradient cut.grd -A45 -Nt -Gcut.grd.gradient -V
 
 
 CPT=cptfile.cpt
-gmt makecpt -Cvik -T30/50/4 -D -Ic -Z > cptfile.cpt
-INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/moho.grd
+gmt makecpt -Cvik -T30/45/3 -D -Ic -Z > cptfile.cpt
+INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/moho.xyz
 echo $INPUT_FILE
 XOFF=1i
 YOFF=12i
@@ -26,6 +26,7 @@ YOFF=12i
 gmt psbasemap -R$R -J$J -B4f1 -BWseN -K -X$XOFF -Y$YOFF > $PS
 gmt pscoast -R$R -J$J -N2/1p -A500 -W1p -O -K >> $PS
 
+gmt grdimage cut.grd -R -J$J  -Bx4f2  -By4f2 -BWseN -Icut.grd.gradient -Cgray -X$XOFF -Y$YOFF -K > $PS
 # gmt grdimage cut.grd -R -J$J  -Bx4f2  -By4f2 -BWseN -Icut.grd.gradient -Cgray -X$XOFF -Y$YOFF -K > $PS
 # for sta in `awk '$3=="phzh" || $3=="phwf" || $3=="phzhwf" {print $4}' /mnt/home/jieyaqi/Documents/invinfo.txt`
 # do
@@ -33,17 +34,23 @@ gmt pscoast -R$R -J$J -N2/1p -A500 -W1p -O -K >> $PS
 #     gmt psxy -R$R -J$J -Sc8p -Wblack -C$CPT -K -O >> $PS
 # done
 
-gmt grdsample $INPUT_FILE -Ginput.grd2  -I0.1 -R$R -V
-gmt grdfilter input.grd2 -Ginput.grd3 -Fg100 -D4 -R$R
+# gmt grdsample $INPUT_FILE -Ginput.grd2  -I0.1 -R$R -V
+# gmt grdfilter input.grd2 -Ginput.grd3 -Fg100 -D4 -R$R
 
-gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K -t80>> $PS
-gmt psclip -R$R -J$J ~/Documents/mask.xy -BWseN -S10 -K -O -V >> $PS
-gmt grdimage  input.grd3  -R -J$J  -BwseN -C$CPT -K  -O  >> $PS
-gmt psclip -C -O -K >> $PS
+# gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K -t80>> $PS
+# gmt psclip -R$R -J$J ~/Documents/mask.xy -BWseN -S10 -K -O -V >> $PS
+# gmt grdimage  input.grd3  -R -J$J  -BwseN -C$CPT -K  -O  >> $PS
+# gmt psclip -C -O -K >> $PS
 
 gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p/black -O -K >> $PS
 gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p/black -O -K>> $PS
 gmt psxy ~/Documents/volcano.dat -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
+
+for sta in `awk '$3=="phwf" || $3=="phzh" || $3=="phzhwf" {print $4}' /mnt/home/jieyaqi/Documents/invinfo.txt`
+do
+    awk '$4=="'$sta'" {print $1,$2,$3}' $INPUT_FILE |
+    gmt psxy -R$R -J$J -Sc8p -Wblack -C$CPT -K -O >> $PS
+done
 
 DSCALE=1.5i/-0.12i/2.6i/0.1ih
 gmt psscale -C$CPT -D$DSCALE  -O -X0 -B+l'Crustal depth (km)' >> $PS

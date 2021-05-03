@@ -40,8 +40,8 @@ do
         moho=40
     fi
 
-    mohomin=`echo $moho | awk '{print $1-10}'`
-    mohomax=`echo $moho | awk '{print $1+10}'`
+    mohomin=`echo $moho | awk '{print $1-7}'`
+    mohomax=`echo $moho | awk '{print $1+7}'`
 
     sedmax=`echo $sed | awk '{print $1+4}'`
     sedmin=`echo $sed | awk '{print $1-4}'`

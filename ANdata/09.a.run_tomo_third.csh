@@ -3,7 +3,7 @@
 limit datasize unlimited
 limit stacksize unlimited
 
-set work_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3obs/tomo/select_result 
+set work_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo/select_result 
 set code_dir = /mnt/home/jieyaqi/code/JOINT_PACKAGE/bin 
 
 

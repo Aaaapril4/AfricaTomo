@@ -3,7 +3,7 @@
 # path
 projd = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion'
 staf = '/mnt/home/jieyaqi/Documents/station.txt' # file included all stations, format: net, sta, lon, lat
-phased_short = '/mnt/home/jieyaqi/code/FMST/Shell_for_FMM_obs/output_tomo' # path of phase velocity
+phased_short = '/mnt/home/jieyaqi/code/FMST/Shell_for_FMM/output_tomo' # path of phase velocity
 phased_long = '/mnt/home/jieyaqi/Documents/FinalModels/PhaseVelocities' # path of phase velocity
 zhd = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/zhcurve' # path of zh curve
 waved = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/waveform'
@@ -12,11 +12,12 @@ invd = '/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion' # path to do inversi
 
 ncpu = 48
 # set up period used 
-perlist_short = [5,7,9,13,17,21,25,29,33,37,41]
+perlist_short = [5,7,9,13,17,21,25,29,33,37,41,45]
 #perlist_short = [5, 9, 17, 25, 33, 41]
 #perlist_long = [50, 67, 80, 100, 125, 143, 167, 182]
-perlist_long = [50, 67, 80, 100, 125, 143]
-filename_long = ['bp07', 'bp08', 'bp09', 'bp10', 'bp11', 'bp12', 'bp13', 'bp14']
+perlist_long = []
+# perlist_long = [67, 80, 100, 125, 143]
+filename_long = {20:'bp01', 22:'bp02', 25:'bp03', 29:'bp04', 33:'bp05', 40:'bp06', 50:'bp07', 67:'bp08', 80:'bp09', 100:'bp10', 125:'bp11', 143:'bp12', 167:'bp13', 182:'bp14'}
 import numpy as np
 import sys
 import os
@@ -46,12 +47,12 @@ def collect_grid_latlonpv():
         lond[per] = np.round(lonl,2)
         pvd[per] = vel
 
-    for i in range(len(perlist_long)):
-        f = f'{phased_long}/{filename_long[i]}/2D_result_{filename_long[i]}_interpolated.xyz'
+    for per in perlist_long:
+        f = f'{phased_long}/{filename_long[per]}/2D_result_{filename_long[per]}_interpolated.xyz'
         lonl,latl,vel = np.loadtxt(f,unpack=True)
-        latd[perlist_long[i]] = np.round(latl,2)
-        lond[perlist_long[i]] = np.round(lonl,2)
-        pvd[perlist_long[i]] = vel
+        latd[per] = np.round(latl,2)
+        lond[per] = np.round(lonl,2)
+        pvd[per] = vel
     return latd, lond, pvd
 
 
@@ -284,7 +285,7 @@ if __name__=='__main__':
                 N = list(tqdm(p.imap(pre_grid_all, gridl), total=len(gridl)))
 
         elif sys.argv[1] == 'sta':
-            stalf = '/mnt/home/jieyaqi/Documents/mysta.lst'
+            stalf = '/mnt/home/jieyaqi/Documents/station.lst'
             stal = np.loadtxt(stalf, dtype='str')
             with mp.Pool(ncpu) as p:
                 N = list(tqdm(p.imap(pre_sta_all, stal), total=len(stal)))

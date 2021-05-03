@@ -1,11 +1,11 @@
 #!/bin/sh
-out_dir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/stationzh
+out_dir=/mnt/scratch/jieyaqi/africa/RTZ
 cod_dir=~/code/JOINT_PAKAGE/bin
 
 for com in EE EN EZ NN NE NZ ZZ ZE ZN
 do
      echo $com
-     dat_dir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/data/STACK_doubleside/$com/LINE_STACK
+     dat_dir=/mnt/scratch/jieyaqi/africa/$com/TF_PWS
      cd $dat_dir
 
      if [ ! -d $out_dir ] ; then

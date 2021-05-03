@@ -64,7 +64,7 @@ do
     gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p,black -O -K >> $PS
     gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p,black -O -K>> $PS
     echo 38 -14 'T: '${per[$i]}'s' | gmt pstext -J$J -R$R -F+f18p -O -K >> $PS
-    avg=`awk '$1=='${per[$i]}' {print $2}' /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3obs/tomo/velocity$para.dat`
+    avg=`awk '$1=='${per[$i]}' {print $2}' /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo/velocity$para.dat`
     echo 31.5 3 'Average: '$avg' km/s' | gmt pstext -J$J -R$R -F+f18p -O -K >> $PS
     DSCALE=1.5i/-0.12i/2.6i/0.1ih
 	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l"Perturbation (%)" >> $PS

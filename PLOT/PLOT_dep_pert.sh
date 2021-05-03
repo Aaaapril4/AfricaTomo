@@ -13,6 +13,7 @@ PS=~/Documents/plot/vs.ps
 
 CPT=cptfile.cpt
 INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/vel.xyz
+rfile=pertcolor.dat
 
 
 # depth you should give your own
@@ -32,9 +33,10 @@ do
     avg=`python3 cal_perturbation.py absvel.xyz`
     gmt surface pertz.xyz -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample input.grd -Ginput.grd2  -I0.1 -R$R -V
-    gmt grdfilter input.grd2 -Ginput.grd3 -Fg120 -D4 -R$R
+    gmt grdfilter input.grd2 -Ginput.grd3 -Fg150 -D4 -R$R
 
-    gmt makecpt -Cvik -T-10/10/5 -D -Z -Iz> $CPT
+    range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
+    gmt makecpt -Cvik -T$range -D -Z -Iz> $CPT
 
 	if  (( $i ==  0  )) ; then
        XOFF=1i

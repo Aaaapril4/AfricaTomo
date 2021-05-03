@@ -10,7 +10,7 @@ gmt gmtset MAP_TICK_LENGTH_SECONDARY 2p
 R=25/40/-15/4
 J=m0.2i
 PS=~/Documents/plot/vs.ps
-INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/dep.${dep[$i]}.grd
+#INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/dep.${dep[$i]}.grd
 
 CPT=cptfile.cpt
 rfile=vscolor.dat
@@ -28,12 +28,13 @@ for (( i=0; i<=13; i++ ))
 do
 
     echo ${dep[$i]}
-	# awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE | gmt surface  -R$R -I0.2  -Ginput.grd -T0.5
+	INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/dep.${dep[$i]}.grd
+    # awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE | gmt surface  -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample $INPUT_FILE -Ginput.grd2  -I0.1 -R$R -V
     gmt grdfilter input.grd2 -Ginput.grd3 -Fg120 -D4 -R$R
 
     range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
-    gmt makecpt -Cseis -T$range -D -Z > $CPT
+    gmt makecpt -Crainbow -T$range -Z -D -Ic > $CPT
 
 	if  (( $i ==  0  )) ; then
        XOFF=1i

@@ -41,10 +41,10 @@ do
         moho=40
     fi  
 
-    mohomin=`echo $moho | awk '{print $1-3}'`
-    mohomax=`echo $moho | awk '{print $1+3}'`
-    sedmax=`echo $sed | awk '{print $1+3}'`
-    sedmin=`echo $sed | awk '{print $1-3}'`
+    mohomin=`echo $moho | awk '{print $1-7}'`
+    mohomax=`echo $moho | awk '{print $1+7}'`
+    sedmax=`echo $sed | awk '{print $1+4}'`
+    sedmin=`echo $sed | awk '{print $1-4}'`
     if [ `echo "0 > $sedmin" | bc` = 1 ]
     then
         sedmin=0

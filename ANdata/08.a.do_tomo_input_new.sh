@@ -1,8 +1,8 @@
 #!/bin/bash
 
-datadir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3obs/disp
+datadir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/disp
 #datadir=/mnt/ufs18/nodr/home/jieyaqi/threestation/curve
-sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/all_obs_debias
+sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/all_debias
 #sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/data_obs/STACK_doubleSTACK/TF_PWS
 
 cod_dir=~/code/JOINT_PACKAGE/bin

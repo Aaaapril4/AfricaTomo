@@ -32,30 +32,47 @@ do
     cd $outdir/G_"$lat"_$lon
 
     # get moho and sediment information
-    sed=`awk '$1=='$lat' && $2=='$lon' {print $3}' $sedmohof`
-    moho=`awk '$1=='$lat' && $2=='$lon' {print $4}' $sedmohof`
-    water=`awk '$1=='$lon' && $2=='$lat' {print $3}' $waterf`
+    # sed=`awk '$1=='$lat' && $2=='$lon' {print $3}' $sedmohof`
+    # moho=`awk '$1=='$lat' && $2=='$lon' {print $4}' $sedmohof`
     
-    if [ ! -n "$moho" ] 
-    then
-        moho=40
-    fi  
+    # if [ ! -n "$moho" ] 
+    # then
+    #     moho=35
+    # fi  
 
-    mohomin=`echo $moho | awk '{print $1-7}'`
-    mohomax=`echo $moho | awk '{print $1+7}'`
-    sedmax=`echo $sed | awk '{print $1+4}'`
-    sedmin=`echo $sed | awk '{print $1-4}'`
-    if [ `echo "0 > $sedmin" | bc` = 1 ]
-    then
-        sedmin=0
-    fi
-    sed -i "11c 0  0   $sedmin $sedmax" para.input
-    sed -i "20c 0  1   $mohomin $mohomax" para.input
+    # mohomin=`echo $moho | awk '{print $1-5}'`
+    # mohomax=`echo $moho | awk '{print $1+5}'`
+    # sedmax=`echo $sed | awk '{print $1+3}'`
+    # sedmin=`echo $sed | awk '{print $1-3}'`
+    # if [ `echo "0 > $sedmin" | bc` = 1 ]
+    # then
+    #     sedmin=0
+    # fi
+    # sed -i "11c 0  0   $sedmin $sedmax" para.input
+    # sed -i "20c 0  1   $mohomin $mohomax" para.input
+
+    # constrain water layer
+    water=`awk '$1=='$lon' && $2=='$lat' {print $3}' $waterf`
     if [ $water ]
     then
         sed -i "3c  1   $water" para.input
     fi
 
+    # To constrain the crust structure
+    parameterf=$crustpath/station/$sta/crust_para.dat
+
+    changepara()
+    {
+        range=`awk 'NR=='$1'{print $0}' $parameterf`
+        sed -i ""$2"c $range" para.input
+    }
+
+    for i in {1..10}
+    do
+        changepara $i `echo $i|awk '{print $1+10}'`
+    done
+
+    # generate script to run
     echo "#!/bin/bash" > run.sh
     echo "date" >> run.sh
     echo "cd $outdir/G_"$lat"_$lon" >>run.sh

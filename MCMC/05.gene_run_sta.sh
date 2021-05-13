@@ -5,6 +5,7 @@ outdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/station
 codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohosta.dat
 stationfile=/mnt/home/jieyaqi/Documents/station.txt
+crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion60
 
 if [ ! -e $outdir ]
 then 
@@ -32,28 +33,44 @@ do
     lon=`awk -F '|' '$1=="'$net'" && $2=="'$stn'"{print $4}' $stationfile`
 
     # get moho and sediment information
-    sed=`awk '$1=="'$sta'" {print $2}' $sedmohof`
-    moho=`awk '$1=="'$sta'" {print $3}' $sedmohof`
+    # sed=`awk '$1=="'$sta'" {print $2}' $sedmohof`
+    # moho=`awk '$1=="'$sta'" {print $3}' $sedmohof`
 
-    if [ `echo "0 == $moho" | bc` = 1 ]
-    then
-        moho=40
-    fi
+    # if [ `echo "0 == $moho" | bc` = 1 ]
+    # then
+    #     moho=35
+    # fi
 
-    mohomin=`echo $moho | awk '{print $1-7}'`
-    mohomax=`echo $moho | awk '{print $1+7}'`
+    # mohomin=`echo $moho | awk '{print $1-5}'`
+    # mohomax=`echo $moho | awk '{print $1+5}'`
 
-    sedmax=`echo $sed | awk '{print $1+4}'`
-    sedmin=`echo $sed | awk '{print $1-4}'`
+    # sedmax=`echo $sed | awk '{print $1+3}'`
+    # sedmin=`echo $sed | awk '{print $1-3}'`
 
-    if [ `echo "0 > $sedmin" | bc` = 1 ]
-    then
-        sedmin=0
-    fi
-    #echo $sedmax $sedmin
-    sed -i "11c 0  0   $sedmin $sedmax" para.input
-    sed -i "20c 0  1   $mohomin $mohomax" para.input
+    # if [ `echo "0 > $sedmin" | bc` = 1 ]
+    # then
+    #     sedmin=0
+    # fi
+    # #echo $sedmax $sedmin
+    # sed -i "11c 0  0   $sedmin $sedmax" para.input
+    # sed -i "20c 0  1   $mohomin $mohomax" para.input
 
+
+    # To constrain the crust structure
+    parameterf=$crustpath/station/$sta/crust_para.dat
+
+    changepara()
+    {
+        range=`awk 'NR=='$1'{print $0}' $parameterf`
+        sed -i ""$2"c $range" para.input
+    }
+
+    for i in {1..10}
+    do
+        changepara $i `echo $i|awk '{print $1+10}'`
+    done
+
+    # generate script to run
     echo "#!/bin/bash" > run.sh
     echo "date" >> run.sh
     echo "cd $outdir/$sta" >> run.sh
@@ -61,7 +78,6 @@ do
     echo "rm -rf run_info" >> run.sh
     echo "fi" >> run.sh
     echo "$run para.input Africa."$sta".dat >> run_info" >> run.sh
-    # echo "awk '{print $lat,$lon,\$1,\$2}' intp.dat >> $filep/vel.xyz" >> run.sh
     echo "sh plot_mcmc2.sh" >> run.sh
     echo "date" >> run.sh
     cd $codedir

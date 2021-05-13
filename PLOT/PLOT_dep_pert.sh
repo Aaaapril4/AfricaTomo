@@ -9,10 +9,11 @@ gmt gmtset MAP_TICK_LENGTH_SECONDARY 2p
 
 R=25/40/-15/4
 J=m0.2i
-PS=~/Documents/plot/vs.ps
+PS=~/Documents/plot/vs60.ps
 
 CPT=cptfile.cpt
-INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/vel.xyz
+INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion60/vel.xyz
+#INPUT_FILE=/mnt/home/jieyaqi/Documents/FinalModels/ShearVelocities/vs.xyz
 rfile=pertcolor.dat
 
 
@@ -75,7 +76,7 @@ do
    
 
     DSCALE=1.5i/-0.12i/2.6i/0.1ih
-	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'Vs (km/s)' >> $PS
+	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'Perturbation (%)' >> $PS
 
 
 done
@@ -84,4 +85,5 @@ rm $PS
 rm cptfile.cpt
 rm input.grd
 rm input.grd2
+rm absvel.xyz pertz.xyz
 time

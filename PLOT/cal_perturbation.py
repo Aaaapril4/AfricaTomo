@@ -14,7 +14,7 @@ def cal_perturbation(pathtof):
     x,y,absvel = np.loadtxt(pathtof, unpack=True)
     pertb, avg = _cal_perturbation(absvel)
     np.savetxt("pertz.xyz", np.column_stack((x,y,pertb)))
-    print(round(avg,4))
+    print(round(avg,2))
 
     return
 

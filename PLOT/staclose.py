@@ -56,7 +56,7 @@ if __name__ == '__main__':
       cut_off=float(sys.argv[4])
       
       with open(seis, 'r') as f:
-         lines = [ line.strip().split('\t') for line in f.readlines()]
+         lines = [ line.strip().split('\t') for line in f.readlines() ]
 
       stlo = []
       stla = []

@@ -73,6 +73,7 @@ fi
 R=25/42/-15/4
 R1=$startx/$endx/-1000/3000
 R2=$startx/$endx/0/4
+#R3=$startx/$endx/0/150
 R3=$startx/$endx/0/150
 PS=~/Documents/plot/profile/profile"$1"_"$2"_"$3"_"$4".ps
 if [ $tag == "norm" ]
@@ -129,7 +130,7 @@ for dep in {0..10}
 do
     gmt grdtrack lined -G$datap/dep.$dep.grd -T0.1 | awk dep=$dep'{print $1, $2, dep, $4}' >> profile.grd
 done
-for dep in {15..200..5} 
+for dep in {12..200..2} 
 do
     gmt grdtrack lined -G$datap/dep.$dep.grd -T0.1 | awk dep=$dep'{print $1, $2, dep, $4}' >> profile.grd
 done
@@ -192,6 +193,7 @@ gmt psconvert -A -P -Tf $PS
 rm $PS
 rm out.dat
 rm profile.grd
-#rm lined temp
+rm lined temp staXY
 rm cptfile.cpt
 rm input.grd
+rm profilesed.grd profilemoho.grd

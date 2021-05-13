@@ -46,7 +46,7 @@ gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p/black -O -K >> $PS
 gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p/black -O -K>> $PS
 gmt psxy ~/Documents/volcano.dat -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
 
-for sta in `awk '$3=="phwf" || $3=="phzh" || $3=="phzhwf" {print $4}' /mnt/home/jieyaqi/Documents/invinfo.txt`
+for sta in `awk '$3=="phwf" || $3=="phzhwf" {print $4}' /mnt/home/jieyaqi/Documents/invinfo.txt`
 do
     awk '$4=="'$sta'" {print $1,$2,$3}' $INPUT_FILE |
     gmt psxy -R$R -J$J -Sc8p -Wblack -C$CPT -K -O >> $PS

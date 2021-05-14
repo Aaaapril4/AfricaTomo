@@ -6,6 +6,7 @@ codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohogrid.dat
 gridf=/mnt/home/jieyaqi/Documents/invgrid.txt
 waterf=~/Documents/water.dat
+crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion60
 
 if [ ! -e $outdir ]
 then 
@@ -59,7 +60,7 @@ do
     fi
 
     # To constrain the crust structure
-    parameterf=$crustpath/station/$sta/crust_para.dat
+    parameterf=$crustpath/grid/G_"$lat"_$lon/crust_para.dat
 
     changepara()
     {

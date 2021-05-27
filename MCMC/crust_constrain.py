@@ -29,5 +29,5 @@ if __name__ == '__main__':
 
     with open("crust_para.dat", 'w') as f:
         for i,ele in enumerate(parameter):
-            f.write("%d  %d  %.2f  %.2f\n" % (column1[i], column2[i], ele-0.01, ele+0.01))
+            f.write("%d  %d  %.2f  %.2f\n" % (column1[i], column2[i], max(ele-0.1, 0), ele+0.1))
     

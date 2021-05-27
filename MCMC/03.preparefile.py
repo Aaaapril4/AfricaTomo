@@ -14,7 +14,6 @@ ncpu = 48
 # set up period used 
 perlist_short = [5,7,9,13,17,21,25,29,33,37,41,45]
 #perlist_short = [5, 9, 17, 25, 33, 41]
-#perlist_long = [50, 67, 80, 100, 125, 143, 167, 182]
 perlist_long = []
 perlist_long = [67, 80, 100, 125, 143]
 filename_long = {20:'bp01', 22:'bp02', 25:'bp03', 29:'bp04', 33:'bp05', 40:'bp06', 50:'bp07', 67:'bp08', 80:'bp09', 100:'bp10', 125:'bp11', 143:'bp12', 167:'bp13', 182:'bp14'}

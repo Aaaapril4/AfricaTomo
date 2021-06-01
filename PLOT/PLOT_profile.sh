@@ -167,7 +167,7 @@ plotdeep()
     awk '{print $1, $2, $3}' out.dat | gmt surface  -R -I0.05/1  -Ginput.grd -T0.3 -C0.1 
     gmt makecpt -Croma -T3.1/4.7/0.4 -D -Z > cptfile.cpt
     gmt grdimage  input.grd  -R -J  -BWSen -Ccptfile.cpt -P -O -K >> $PS
-    gmt grdcontour input.grd -R -J -L2/5 -C0.2 -A0.4+f14p -W0.5p,black,dashed -O -K >> $PS
+    gmt grdcontour input.grd -R -J -L2/5 -C0.1 -A0.3+f14p -W0.5p,black,dashed -O -K >> $PS
     awk x=$1'{print $(x),$3}' profilemoho.grd | gmt psxy -R -J -Bwsen -W1p -K -O >> $PS
 
     awk '{print $0}' $seisf > temp

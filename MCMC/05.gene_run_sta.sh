@@ -5,7 +5,7 @@ outdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/station
 codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohosta.dat
 stationfile=/mnt/home/jieyaqi/Documents/station.txt
-crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion60
+crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion6015
 
 if [ ! -e $outdir ]
 then 
@@ -35,8 +35,8 @@ do
     # get moho and sediment information
     changesedmoho()
     {
-        sed=`awk '$1=='$lat' && $2=='$lon' {print $3}' $sedmohof`
-        moho=`awk '$1=='$lat' && $2=='$lon' {print $4}' $sedmohof`
+        sed=`awk '$1=="'$sta'" {print $2}' $sedmohof`
+        moho=`awk '$1=="'$sta'" {print $3}' $sedmohof`
         
         if [ ! -n "$moho" ] 
         then

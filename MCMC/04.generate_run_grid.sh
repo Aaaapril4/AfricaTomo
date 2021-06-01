@@ -6,7 +6,7 @@ codedir=/mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
 sedmohof=/mnt/home/jieyaqi/Documents/sednmohogrid.dat
 gridf=/mnt/home/jieyaqi/Documents/invgrid.txt
 waterf=~/Documents/water.dat
-crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion60
+crustpath=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion6015
 
 if [ ! -e $outdir ]
 then 

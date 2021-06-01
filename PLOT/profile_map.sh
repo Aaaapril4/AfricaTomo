@@ -45,7 +45,7 @@ gmt psxy -R$R -J$J -W2p,black -O -K profileline.txt >> $PS
 
 gmt psscale -R$R -J$J -D3.05i/1.5i/3i/0.3iv -C123.cpt -B1000 -O >> $PS --MAP_LABEL_OFFSET=-0.15i --FONT_ANNOT_PRIMARY=8p --FONT_LABEL=8p --MAP_TICK_LENGTH_PRIMARY=0.04i
 
-rm gmt.* Africa.grd int.grad 123.cpt $PS
+rm gmt.* Africa.grd int.grad 123.cpt
 
 gmt psconvert -A -P -Tf $PS
 

@@ -32,10 +32,10 @@ do
 	INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/dep.${dep[$i]}.grd
     # awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE | gmt surface  -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample $INPUT_FILE -Ginput.grd2  -I0.1 -R$R -V
-    gmt grdfilter input.grd2 -Ginput.grd3 -Fg120 -D4 -R$R
+    gmt grdfilter input.grd2 -Ginput.grd3 -Fg150 -D4 -R$R
 
     range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
-    gmt makecpt -Crainbow -T$range -Z -D -Ic > $CPT
+    gmt makecpt -Croma -T$range -Z -D > $CPT
 
 	if  (( $i ==  0  )) ; then
        XOFF=1i

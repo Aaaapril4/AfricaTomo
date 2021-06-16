@@ -19,7 +19,7 @@ gmt grdgradient cut.grd -A45 -Nt -Gcut.grd.gradient -V
 per=( 7   9  13  17  21  25  29  33  37  41  45  49  53 )
 #id   0  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
 CPT=cptfile.cpt
-gmt makecpt -Cpanoply -T0.6/2.1/0.3 -D -Ic -Z > cptfile.cpt
+gmt makecpt -Cvik -T0.6/2.1/0.3 -D -Ic -Z > cptfile.cpt
 for (( i=0; i<=6; i++ ))
 #for i=0
 do

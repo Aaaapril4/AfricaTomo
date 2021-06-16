@@ -2,7 +2,7 @@
 ## Pick data
 limit datasize 1000000; limit stacksize 120000
 
-set work = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo
+set work = /mnt/ufs18/nodr/home/jieyaqi/africa_love/tomoI2/tomo
 set code_dir = /mnt/home/jieyaqi/code/JOINT_PACKAGE/bin
 set out_dir = "$work"/select_result 
 set numwave = 1.5

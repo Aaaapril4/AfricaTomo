@@ -1,9 +1,9 @@
 #!/bin/bash
 
-datadir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/disp
+datadir=/mnt/ufs18/nodr/home/jieyaqi/africa_love/tomoI2/disp
 #datadir=/mnt/ufs18/nodr/home/jieyaqi/threestation/curve
 sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/all_debias
-#sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/data_obs/STACK_doubleSTACK/TF_PWS
+sacdir=/mnt/ufs18/nodr/home/jieyaqi/africa_love/all_tt
 
 cod_dir=~/code/JOINT_PACKAGE/bin
 
@@ -12,7 +12,7 @@ ls  $sacdir/*.SAC| awk '{print "ln -s", $1, "."}' > ln.csh
 csh ln.csh
 cd $datadir
 pwd
-for disp in `ls *.ZZ.disp`
+for disp in `ls *.TT.disp`
 do
         #COR_MC04.MC18.ZZ.SAC.disp
         echo $disp
@@ -27,7 +27,7 @@ done
 
 cd ${datadir}
   rm -rf temp  5to50_file_s.dat
-  ls *.ZZ.SAC > temp
+  ls *.TT.SAC > temp
   awk '{printf"%s_s\n",$1}' temp> 5to50_file_s.dat
 
   for per in 5 7 9 13 17 21 25 29 33 37 41 45 49 53 57 61 65

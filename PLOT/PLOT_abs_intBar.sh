@@ -10,7 +10,7 @@ para=300_100
 
 R=25/40/-15/4
 J=m0.2i
-PS=~/Documents/plot/tomo_abBarminI3$para.ps
+PS=~/Documents/plot/tomo_loveBarminI3$para.ps
 
 # period you should give your own
 per=( 5  7   9  13  17  21  25  29  33  37  41  45  49  53  57  61  65 )
@@ -21,7 +21,8 @@ for (( i=0; i<=11; i++ ))
 do
 
     echo ${per[$i]}
-	INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo/select_result/"${per[$i]}"/"$para"_100/Africa_"$para"_"${per[$i]}".1_%_
+    INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/africa_love/tomoI2/tomo/select_result/"${per[$i]}"/"$para"_100/Africa_"$para"_"${per[$i]}".1_%_
+	#INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo/select_result/"${per[$i]}"/"$para"_100/Africa_"$para"_"${per[$i]}".1_%_
     awk '{print $1,$2,$3}' $INPUT_FILE |gmt surface  -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample input.grd -Ginput.grd2  -I0.1 -R$R -V
 

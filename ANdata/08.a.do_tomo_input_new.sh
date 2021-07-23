@@ -1,9 +1,9 @@
 #!/bin/bash
 
-datadir=/mnt/ufs18/nodr/home/jieyaqi/africa_love/tomoI2/disp
+datadir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/disp
 #datadir=/mnt/ufs18/nodr/home/jieyaqi/threestation/curve
 sacdir=/mnt/ufs18/nodr/home/jieyaqi/east_africa/all_debias
-sacdir=/mnt/ufs18/nodr/home/jieyaqi/africa_love/all_tt
+#sacdir=/mnt/ufs18/nodr/home/jieyaqi/africa_love/all_tt
 
 cod_dir=~/code/JOINT_PACKAGE/bin
 
@@ -12,7 +12,7 @@ ls  $sacdir/*.SAC| awk '{print "ln -s", $1, "."}' > ln.csh
 csh ln.csh
 cd $datadir
 pwd
-for disp in `ls *.TT.disp`
+for disp in `ls *.ZZ.disp`
 do
         #COR_MC04.MC18.ZZ.SAC.disp
         echo $disp

@@ -5,7 +5,7 @@ cod_dir=~/code/JOINT_PAKAGE/bin
 for com in EE EN EZ NN NE NZ ZZ ZE ZN
 do
      echo $com
-     dat_dir=/mnt/scratch/jieyaqi/africa/$com/TF_PWS
+     dat_dir=/mnt/scratch/jieyaqi/africa/$com/LINE_STACK
      cd $dat_dir
 
      if [ ! -d $out_dir ] ; then

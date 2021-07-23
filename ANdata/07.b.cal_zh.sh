@@ -23,7 +23,7 @@ do
             
             if [ -e $R ]
             then
-                $cod_dir/calzh -Z $Z -R $R -z $z -r $r -V $vel_fn  -b 2 -e 40 -O $dat
+                $cod_dir/calzh -Z $Z -R $R -z $z -r $r -V $vel_fn -P  -b 2 -e 40 -O $dat
             fi
         done
 
@@ -38,7 +38,7 @@ do
             
             if [ -e $R ]
             then
-                $cod_dir/calzh -Z $Z -R $R -z $z -r $r -V $vel_fn  -b 2 -e 40 -O $dat
+                $cod_dir/calzh -Z $Z -R $R -z $z -r $r -V $vel_fn -P  -b 2 -e 40 -O $dat
             fi  
         done
 

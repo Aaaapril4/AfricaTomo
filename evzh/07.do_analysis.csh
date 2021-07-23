@@ -1,5 +1,5 @@
 #!/bin/csh
-set dat_dir = /mnt/ufs18/nodr/home/jieyaqi/eventzh/
+set dat_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/eventzh/
 set cod_dir = /mnt/home/jieyaqi/code/JOINT_PACKAGE/bin
 
 cd $dat_dir

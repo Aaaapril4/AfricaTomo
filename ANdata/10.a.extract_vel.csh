@@ -1,8 +1,9 @@
 #!/bin/csh
-set dat_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3obs/tomo/select_result  
-set out_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3obs/curve
+set dat_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/tomo/select_result  
+set out_dir = /mnt/ufs18/nodr/home/jieyaqi/east_africa/tomoI3/curve
 set cod_dir = ~/code/JOINT_PACKAGE/bin
 set stalist = /mnt/home/jieyaqi/Documents/stationwll.lst
+#sta lon lat
 set prename = Africa
 
 # dampling, smooting and alpha are the  alpha0, sigma0 and beta0 in Run_tomo_first.csh.

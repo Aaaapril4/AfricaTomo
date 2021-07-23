@@ -4,8 +4,10 @@ gmt gmtset FONT_LABEL 18p, Times-Roman
 gmt gmtset FONT_ANNOT_PRIMARY 17p,Times-Roman
 gmt gmtset PS_MEDIA a2
 gmt gmtset MAP_TITLE_OFFSET 1.5p
-gmt gmtset MAP_TICK_LENGTH_PRIMARY 3p
-gmt gmtset MAP_TICK_LENGTH_SECONDARY 2p
+gmt gmtset MAP_TICK_LENGTH_PRIMARY 10p
+gmt gmtset MAP_TICK_LENGTH_SECONDARY 5p
+gmt gmtset MAP_TICK_PEN_PRIMARY 1.5p
+gmt gmtset MAP_TICK_PEN_SECONDARY 1p
 
 R=25/40/-15/4
 J=m0.2i
@@ -20,14 +22,13 @@ seisf=~/Documents/seismicity.txt
 
 # depth you should give your own
 #dep=( 10 30 50 )
-dep=( 0.40 5    10   20   25  30  35  40  45  50  60  80  100 120 140 160 180 200 )
+dep=( 0.40 10   25  40  60   100  150 200 )
 #id   0    1    2    3    4   5   6   7   8   9   10  11  12  13  14  15  16  17  18
-CPT=cptfile.cpt
-# gmt grdcut  ~/Documents/global_xyz_2m.grd  -Gcut.grd  -R$R -V
-# gmt grdgradient cut.grd  -A45 -Gcut.grd.gradient -Nt -V
-# gmt grdsample cut.grd.gradient -Gcut.grd.gradient2  -I0.1 -R$R -V
+gmt grdcut  @earth_relief_03m.grd  -Gcut.grd  -R$R
+gmt grdgradient cut.grd -A45 -Nt -Gcut.grd.gradient
+gmt grdsample cut.grd.gradient -Gcut.grd.gradient2  -I0.1 -R$R
 
-for (( i=0; i<=16; i++ ))
+for (( i=0; i<=7; i++ ))
 do
 
     echo ${dep[$i]}
@@ -40,7 +41,7 @@ do
     fi
     gmt surface pertz.xyz -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample input.grd -Ginput.grd2  -I0.1 -R$R -V
-    gmt grdfilter input.grd2 -Ginput.grd3 -Fg150 -D4 -R$R
+    gmt grdfilter input.grd2 -Ginput.grd3 -Fg180 -D4 -R$R
 
     range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
     gmt makecpt -Cvik -T$range -D -Z -Iz> $CPT
@@ -48,29 +49,32 @@ do
 	if  (( $i ==  0  )) ; then
        XOFF=1i
        YOFF=12i
-       gmt psbasemap -R$R -J$J -B4f1 -BWseN -K -X$XOFF -Y$YOFF > $PS
-       gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K -t80>> $PS
-       gmt psclip -R$R -J$J ~/Documents/mask.xy -BWseN -S10 -K -O -V >> $PS
-       gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K >> $PS
+       gmt grdimage  input.grd3  -R -J$J -C$CPT -K -X$XOFF -Y$YOFF -t80 -Icut.grd.gradient2> $PS
+       gmt psclip -R$R -J$J ~/Documents/mask.xy -S10 -K -O -V >> $PS
+       gmt grdimage  input.grd3  -R -J$J -C$CPT -O -K -Icut.grd.gradient2>> $PS
        gmt psclip -C -O -K >> $PS
+       gmt pscoast -R$R -J$J -W0.5p,darkgrey -A1000 -K -O >> $PS
+       gmt psbasemap -R$R -J$J -B5f1 -BWseN -K -O >> $PS
 
-    elif (( $i == 6 )) || (( $i == 12 )) || (( $i == 18 )) || (( $i == 24 )) ; then
-       XOFF=-15.5i
-       YOFF=-5.3i
-       gmt psbasemap -R$R -J$J -B4f1 -BWseN -K -O -X$XOFF -Y$YOFF >> $PS
-       gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K -t80>> $PS
-       gmt psclip -R$R -J$J ~/Documents/mask.xy -BWseN -S10 -K -O -V >> $PS
-       gmt grdimage  input.grd3  -R -J$J  -BWseN -C$CPT -K  -O >> $PS
+    elif (( $i == 4 )) || (( $i == 8 )) || (( $i == 12 )) || (( $i == 16 )) ; then
+       XOFF=-10.5i
+       YOFF=-5.5i
+       gmt grdimage  input.grd3  -R -J$J -C$CPT -O -K -t80 -X$XOFF -Y$YOFF -Icut.grd.gradient2>> $PS
+       gmt psclip -R$R -J$J ~/Documents/mask.xy -S10 -K -O -V >> $PS
+       gmt grdimage  input.grd3  -R -J$J -C$CPT -K  -O -Icut.grd.gradient2>> $PS
        gmt psclip -C -O -K >> $PS
+       gmt pscoast -R$R -J$J -W0.5p,darkgrey -A1000 -K -O >> $PS
+       gmt psbasemap -R$R -J$J -B5f1 -BWseN -K -O >> $PS
 
     else
-       XOFF=3.1i
+       XOFF=3.5i
        YOFF=0i
-       gmt psbasemap -R$R -J$J -B4f1 -BwseN -K -O -X$XOFF -Y$YOFF >> $PS
-       gmt grdimage  input.grd3  -R -J$J -BWseN -C$CPT -O -K -t80>> $PS
-       gmt psclip -R$R -J$J ~/Documents/mask.xy -BWseN -S10 -K -O -V >> $PS
-       gmt grdimage  input.grd3  -R -J$J  -BwseN -C$CPT -K  -O  >> $PS
+       gmt grdimage  input.grd3  -R -J$J -C$CPT -O -K -t80 -X$XOFF -Y$YOFF -Icut.grd.gradient2 >> $PS
+       gmt psclip -R$R -J$J ~/Documents/mask.xy  -S10 -K -O -V >> $PS
+       gmt grdimage  input.grd3  -R -J$J   -C$CPT -K  -O  -Icut.grd.gradient2>> $PS
        gmt psclip -C -O -K >> $PS
+       gmt pscoast -R$R -J$J -W0.5p,darkgrey -A1000 -K -O >> $PS
+       gmt psbasemap -R$R -J$J -B5f1 -BwseN -K -O  >> $PS
     fi
 
     # Plot seismicity
@@ -78,15 +82,15 @@ do
     awk '{print $1,$2,$4/2+1"p"}' abovemoho.dat | gmt psxy -R$R -J$J -Sc -Wdarkgreen -Gdarkgreen -O -K -t10 >> $PS
     awk '{print $1,$2,$4/2+1"p"}' belowmoho.dat | gmt psxy -R$R -J$J -Sa -Wdarkgreen -Gdarkgreen -O -K -t10 >> $PS
 
-    gmt pscoast -R$R -J$J -W0.25p,grey -A1000 -K -O >> $PS
-	gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p/black -O -K >> $PS
-    gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p/black -O -K>> $PS
-    gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
-    echo 36.5 -14 'Depth: '${dep[$i]}' km' | gmt pstext -J$J -R$R -F+f16p -O -K >> $PS
-    echo 30 3 'Average: '$avg' km/s' | gmt pstext -J$J -R$R -F+f16p -O -K >> $PS
+    
+	gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p,black -O -K >> $PS
+    gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p,black -O -K>> $PS
+    gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack  -Gred -O -K >> $PS
+    echo 37.75 -14 ''${dep[$i]}' km' | gmt pstext -J$J -R$R -Gwhite -C0.1c/0.1c -W1p -F+f17p -O -K >> $PS
+    echo 27.75 3 ''$avg' km/s' | gmt pstext -J$J -R$R -Gwhite -W1p -C0.1c/0.1c -F+f17p -O -K >> $PS
 
-    DSCALE=1.5i/-0.12i/2.6i/0.1ih
-	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'Perturbation (%)' >> $PS
+    DSCALE=1.5i/-0.2i/2.6i/0.1ih
+	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'@~\144@~V@-s@-/V@-s@- (%)' >> $PS
 
 
 done

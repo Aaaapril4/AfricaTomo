@@ -37,9 +37,9 @@ gmt pscoast -R25/38/-15/4 -J$J -W0.25p,grey -A1000 -K -O >> $PS
 gmt psxy ~/Documents/earifts.xy -R$R -J$J -W0.5p,black -O -K >> $PS
 gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W0.5p,black -O -K>> $PS
 gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack -Gred -O -K >> $PS
-awk '$3=="phzh" || $3=="phwf" || $3=="phzhwf" {print $1, $2}' ~/Documents/invinfo.txt| gmt psxy -R$R -J$J -St8p -Wblack -Ggrey -O -K >> $PS
+#awk '$3=="phzh" || $3=="phwf" || $3=="phzhwf" {print $1, $2}' ~/Documents/invinfo.txt| gmt psxy -R$R -J$J -St8p -Wblack -Ggrey -O -K >> $PS
 
-awk '$3=="ph" {print $1, $2}' ~/Documents/invinfo.txt| gmt psxy -R$R -J$J -St8p -Wblack -O -K >> $PS
+#awk '$3=="ph" {print $1, $2}' ~/Documents/invinfo.txt| gmt psxy -R$R -J$J -St8p -Wblack -O -K >> $PS
 
 gmt psxy -R$R -J$J -W2p,black -O -K profileline.txt >> $PS 
 

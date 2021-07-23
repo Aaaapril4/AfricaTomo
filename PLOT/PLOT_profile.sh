@@ -74,7 +74,7 @@ R=25/42/-15/4
 R1=$startx/$endx/-1000/3000
 R2=$startx/$endx/0/4
 #R3=$startx/$endx/0/150
-R3=$startx/$endx/0/150
+R3=$startx/$endx/0/160
 PS=~/Documents/plot/profile/profile"$1"_"$2"_"$3"_"$4".ps
 if [ $tag == "norm" ]
 then
@@ -170,10 +170,10 @@ plotdeep()
     gmt grdcontour input.grd -R -J -L2/5 -C0.1 -A0.3+f14p -W0.5p,black,dashed -O -K >> $PS
     awk x=$1'{print $(x),$3}' profilemoho.grd | gmt psxy -R -J -Bwsen -W1p -K -O >> $PS
 
-    awk '{print $0}' $seisf > temp
-    python3 staclose.py seis temp lined 30 > staXY
-    col=`echo $1 + 2 | bc -l`
-    awk x=$col'{print $(x), $6, $8}' staXY | gmt psxy -R$R3 -J$J3 -Sc -Wwhite -Gwhite -O -K -t10 >> $PS
+#    awk '{print $0}' $seisf > temp
+#    python3 staclose.py seis temp lined 30 > staXY
+#    col=`echo $1 + 2 | bc -l`
+#    awk x=$col'{print $(x), $6, $8}' staXY | gmt psxy -R$R3 -J$J3 -Sc -Wwhite -Gwhite -O -K -t10 >> $PS
 
     DSCALE=5i/-0.5i/2.5i/0.2ih
     gmt psscale -Ccptfile.cpt -D$DSCALE -Bx+l'Deep Vs (km/s)' -O -X0 >> $PS

@@ -16,7 +16,7 @@
 
 source /mnt/home/jieyaqi/myseis/bin/activate
 cd /mnt/home/jieyaqi/code/JOINT_PACKAGE/Scripts_JI/MCMC
-sh 05.gene_run_sta.sh
+#sh 05.gene_run_sta.sh
 
 
 date

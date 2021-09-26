@@ -41,7 +41,7 @@ gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack -Gred -O -K >> $
 
 #awk '$3=="ph" {print $1, $2}' ~/Documents/invinfo.txt| gmt psxy -R$R -J$J -St8p -Wblack -O -K >> $PS
 
-gmt psxy -R$R -J$J -W2p,black -O -K profileline.txt >> $PS 
+gmt psxy -R$R -J$J -W2p,black -O -K $1 >> $PS 
 
 gmt psscale -R$R -J$J -D3.05i/1.5i/3i/0.3iv -C123.cpt -B1000 -O >> $PS --MAP_LABEL_OFFSET=-0.15i --FONT_ANNOT_PRIMARY=8p --FONT_LABEL=8p --MAP_TICK_LENGTH_PRIMARY=0.04i
 
@@ -52,12 +52,12 @@ gmt psconvert -A -P -Tf $PS
 mv ./${PS/ps/pdf} ~/Documents/plot/profile
 
 # plot profiles
-N=`awk 'END {print NR}' profileline.txt`
+N=`awk 'END {print NR}' $1`
 for (( i=1; i<=N; i=i+3 ))
 do
-    start=`awk 'NR=='$i' {print $0}' profileline.txt`
-    end=`awk 'NR=='$[i+1]' {print $0}' profileline.txt`
+    start=`awk 'NR=='$i' {print $0}' $1`
+    end=`awk 'NR=='$[i+1]' {print $0}' $1`
     echo $start $end
-    sh PLOT_profile.sh $start $end
+    sh PLOT_profile.sh $start $end $2
 done
 

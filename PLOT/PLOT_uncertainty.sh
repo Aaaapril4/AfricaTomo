@@ -12,9 +12,9 @@ gmt gmtset MAP_TICK_PEN_SECONDARY 1p
 R=25/40/-15/4
 J=m0.2i
 
-PS=~/Documents/plot/vs.ps
+PS=~/Documents/plot/uncert.ps
 CPT=cptfile.cpt
-INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/vel.xyz
+INPUT_FILE=/mnt/ufs18/nodr/home/jieyaqi/east_africa/inversion/uncertainty.xyz 
 #INPUT_FILE=/mnt/home/jieyaqi/Documents/FinalModels/ShearVelocities/vs.xyz
 rfile=pertcolor.dat
 seisf=~/Documents/seismicity.txt 
@@ -28,23 +28,19 @@ gmt grdcut  @earth_relief_03m.grd  -Gcut.grd  -R$R
 gmt grdgradient cut.grd -A45 -Nt -Gcut.grd.gradient
 gmt grdsample cut.grd.gradient -Gcut.grd.gradient2  -I0.1 -R$R
 
+range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
+gmt makecpt -Cvik -T0/0.2/0.05 -D -Z -Iz > $CPT
+
 for (( i=0; i<=7; i++ ))
 do
 
     echo ${dep[$i]}
 	awk '$3=='${dep[$i]}'{print $1,$2,$4}' $INPUT_FILE > absvel.xyz
-    if [ i==0 ]
-    then
-        avg=`python3 cal_perturbation.py absvel.xyz filter`
-    else
-        avg=`python3 cal_perturbation.py absvel.xyz`
-    fi
+    
     gmt surface absvel.xyz -R$R -I0.2  -Ginput.grd -T0.5
     gmt grdsample input.grd -Ginput.grd2  -I0.1 -R$R -V
     gmt grdfilter input.grd2 -Ginput.grd3 -Fg180 -D4 -R$R
 
-    range=`cat $rfile | awk '$1==per {print $2}' per="${dep[$i]}"`
-    gmt makecpt -Cvik -T$range -D -Z -Iz > $CPT
 
 	if  (( $i ==  0  )) ; then
        XOFF=1i
@@ -77,20 +73,14 @@ do
        gmt psbasemap -R$R -J$J -B5f1 -BwseN -K -O  >> $PS
     fi
 
-    # Plot seismicity
-    python3 seismoho.py $seisf ${dep[$i]} 2
-    awk '{print $1,$2,$4/2+1"p"}' abovemoho.dat | gmt psxy -R$R -J$J -Sc -Wdarkgreen -Gdarkgreen -O -K -t10 >> $PS
-    awk '{print $1,$2,$4/2+1"p"}' belowmoho.dat | gmt psxy -R$R -J$J -Sa -Wdarkgreen -Gdarkgreen -O -K -t10 >> $PS
-
     
 	gmt psxy ~/Documents/earifts.xy -R$R -J$J -W1p,black -O -K >> $PS
     gmt psxy ~/Documents/tzcraton.xy -R$R -J$J -W1p,black -O -K>> $PS
     gmt psxy ~/Documents/volcano_africa.txt -R$R -J$J -St8p -Wblack  -Gred -O -K >> $PS
     echo 27 3 ''${dep[$i]}' km' | gmt pstext -J$J -R$R -Gwhite -C0.1c/0.1c -W1p -F+f17p -O -K >> $PS
-    # echo 27.75 3 ''$avg' km/s' | gmt pstext -J$J -R$R -Gwhite -W1p -C0.1c/0.1c -F+f17p -O -K >> $PS
 
     DSCALE=1.5i/-0.2i/2.6i/0.1ih
-	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'V@-s@- (km/s)' >> $PS
+	gmt psscale -C$CPT -D$DSCALE -O -K -X0 -B+l'Uncertainty (km/s)' >> $PS
 
 done
 
@@ -98,6 +88,5 @@ gmt psconvert -A -P -Tf $PS
 rm $PS
 rm cptfile.cpt
 rm input.grd*
-rm abovemoho.dat belowmoho.dat
-rm absvel.xyz pertz.xyz
+rm absvel.xyz
 time

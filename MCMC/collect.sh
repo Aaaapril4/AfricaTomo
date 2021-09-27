@@ -132,3 +132,11 @@ do
     fi
     
 done
+
+for dep in {0..200}
+do
+    awk '$3=='$dep' {print $1, $2, $4}' $outf | gmt surface  -R25/42/-15/4 -I0.2  -G$projd/dep."$dep".grd -T0.5
+done
+
+gmt surface $projd/sedid.xyz -R25/42/-15/4 -I0.2  -G$projd/sed.grd -T0.5
+gmt surface $projd/mohod.xyz -R25/42/-15/4 -I0.2  -G$projd/moho.grd -T0.5

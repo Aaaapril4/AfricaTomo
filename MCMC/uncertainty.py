@@ -75,7 +75,7 @@ def cal_devia(fvel, vellist):
     for vel in vellist:
         sum = sum + (fvel-vel)**2
     
-    return sum/len(vellist)
+    return np.sqrt(sum/len(vellist))
 
 
 
@@ -124,8 +124,8 @@ def get_latlon(sta):
     net = sta.split('.')[0]
     st = sta.split('.')[1]
     nwl, stal, latl, lonl = np.loadtxt(staf,delimiter='|',unpack=True,usecols=(0,1,2,3),skiprows=0,dtype=str)
-    lat = round(float(latl[nwl==net][stal[nwl==net]==st][0]),2)
-    lon = round(float(lonl[nwl==net][stal[nwl==net]==st][0]),2)
+    lat = float(latl[nwl==net][stal[nwl==net]==st][0])
+    lon = float(lonl[nwl==net][stal[nwl==net]==st][0])
     return lat,lon
 
 
